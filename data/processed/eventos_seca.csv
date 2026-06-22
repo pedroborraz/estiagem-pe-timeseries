@@ -1,0 +1,138 @@
+municipio,inicio,fim,duracao_meses,spi_minimo,classificacao
+Recife,1971-01-01,1971-02-01,2,-1.26,Seca Moderada
+Recife,1976-06-01,1976-09-01,4,-1.37,Seca Moderada
+Recife,1979-03-01,1979-06-01,4,-1.61,Seca Severa
+Recife,1981-06-01,1981-08-01,3,-1.56,Seca Severa
+Recife,1983-06-01,1983-09-01,4,-2.74,Seca Extrema
+Recife,1984-01-01,1984-02-01,2,-1.11,Seca Moderada
+Recife,1992-06-01,1992-07-01,2,-1.38,Seca Moderada
+Recife,1993-01-01,1993-10-01,10,-2.58,Seca Extrema
+Recife,1994-01-01,1994-02-01,2,-1.65,Seca Severa
+Recife,1997-07-01,1997-12-01,6,-2.35,Seca Extrema
+Recife,1998-02-01,1998-08-01,7,-1.73,Seca Severa
+Recife,1999-01-01,1999-09-01,9,-2.1,Seca Extrema
+Recife,2004-12-01,2005-04-01,5,-2.5,Seca Extrema
+Recife,2005-11-01,2006-03-01,5,-1.61,Seca Severa
+Recife,2008-11-01,2009-01-01,3,-1.82,Seca Severa
+Recife,2010-04-01,2010-05-01,2,-1.36,Seca Moderada
+Recife,2010-11-01,2010-12-01,2,-2.43,Seca Extrema
+Recife,2012-04-01,2012-06-01,3,-1.93,Seca Severa
+Recife,2012-09-01,2013-05-01,9,-2.35,Seca Extrema
+Recife,2015-04-01,2015-06-01,3,-1.47,Seca Moderada
+Recife,2015-10-01,2015-11-01,2,-2.19,Seca Extrema
+Recife,2016-08-01,2016-12-01,5,-3.5,Seca Extrema
+Caruaru,1971-01-01,1971-02-01,2,-1.41,Seca Moderada
+Caruaru,1976-07-01,1976-09-01,3,-1.74,Seca Severa
+Caruaru,1979-03-01,1979-05-01,3,-1.25,Seca Moderada
+Caruaru,1980-05-01,1980-07-01,3,-1.26,Seca Moderada
+Caruaru,1981-06-01,1981-08-01,3,-1.92,Seca Severa
+Caruaru,1983-05-01,1983-09-01,5,-2.09,Seca Extrema
+Caruaru,1987-09-01,1988-01-01,5,-1.53,Seca Severa
+Caruaru,1990-03-01,1990-06-01,4,-1.54,Seca Severa
+Caruaru,1991-01-01,1991-02-01,2,-1.34,Seca Moderada
+Caruaru,1992-12-01,1993-09-01,10,-2.57,Seca Extrema
+Caruaru,1997-10-01,1997-11-01,2,-2.01,Seca Extrema
+Caruaru,1998-03-01,1998-08-01,6,-2.24,Seca Extrema
+Caruaru,1998-10-01,1999-09-01,12,-2.72,Seca Extrema
+Caruaru,2004-11-01,2005-02-01,4,-2.31,Seca Extrema
+Caruaru,2008-11-01,2009-01-01,3,-1.47,Seca Moderada
+Caruaru,2009-11-01,2009-12-01,2,-1.54,Seca Severa
+Caruaru,2012-03-01,2013-05-01,15,-2.49,Seca Extrema
+Caruaru,2015-10-01,2015-11-01,2,-1.56,Seca Severa
+Caruaru,2016-08-01,2016-11-01,4,-2.66,Seca Extrema
+Garanhuns,1970-12-01,1971-02-01,3,-1.91,Seca Severa
+Garanhuns,1976-07-01,1976-09-01,3,-2.53,Seca Extrema
+Garanhuns,1979-07-01,1979-09-01,3,-1.36,Seca Moderada
+Garanhuns,1980-05-01,1980-09-01,5,-1.4,Seca Moderada
+Garanhuns,1983-05-01,1983-09-01,5,-2.72,Seca Extrema
+Garanhuns,1987-07-01,1988-01-01,7,-2.37,Seca Extrema
+Garanhuns,1990-03-01,1990-07-01,5,-1.69,Seca Severa
+Garanhuns,1991-01-01,1991-02-01,2,-1.85,Seca Severa
+Garanhuns,1993-02-01,1993-06-01,5,-2.46,Seca Extrema
+Garanhuns,1993-08-01,1993-09-01,2,-1.54,Seca Severa
+Garanhuns,1997-10-01,1997-11-01,2,-2.17,Seca Extrema
+Garanhuns,1998-02-01,1998-06-01,5,-1.82,Seca Severa
+Garanhuns,1998-10-01,1999-06-01,9,-2.06,Seca Extrema
+Garanhuns,2001-03-01,2001-05-01,3,-1.46,Seca Moderada
+Garanhuns,2003-05-01,2003-06-01,2,-1.2,Seca Moderada
+Garanhuns,2004-12-01,2005-02-01,3,-2.36,Seca Extrema
+Garanhuns,2006-12-01,2007-01-01,2,-1.17,Seca Moderada
+Garanhuns,2012-03-01,2012-08-01,6,-2.29,Seca Extrema
+Garanhuns,2012-11-01,2013-05-01,7,-2.41,Seca Extrema
+Garanhuns,2015-05-01,2015-06-01,2,-1.38,Seca Moderada
+Garanhuns,2015-10-01,2015-12-01,3,-1.95,Seca Severa
+Garanhuns,2016-06-01,2016-11-01,6,-2.82,Seca Extrema
+Serra Talhada,1970-06-01,1970-07-01,2,-1.82,Seca Severa
+Serra Talhada,1971-01-01,1971-02-01,2,-3.03,Seca Extrema
+Serra Talhada,1976-07-01,1976-08-01,2,-1.88,Seca Severa
+Serra Talhada,1979-07-01,1979-08-01,2,-2.75,Seca Extrema
+Serra Talhada,1980-05-01,1980-07-01,3,-2.62,Seca Extrema
+Serra Talhada,1982-08-01,1982-10-01,3,-1.31,Seca Moderada
+Serra Talhada,1983-06-01,1983-10-01,5,-2.5,Seca Extrema
+Serra Talhada,1984-01-01,1984-02-01,2,-2.15,Seca Extrema
+Serra Talhada,1987-09-01,1987-12-01,4,-3.5,Seca Extrema
+Serra Talhada,1990-03-01,1990-05-01,3,-1.45,Seca Moderada
+Serra Talhada,1992-07-01,1992-10-01,4,-1.88,Seca Severa
+Serra Talhada,1993-01-01,1993-05-01,5,-2.51,Seca Extrema
+Serra Talhada,1998-04-01,1998-06-01,3,-2.06,Seca Extrema
+Serra Talhada,2001-03-01,2001-04-01,2,-1.13,Seca Moderada
+Serra Talhada,2002-10-01,2002-11-01,2,-1.26,Seca Moderada
+Serra Talhada,2003-09-01,2003-10-01,2,-1.63,Seca Severa
+Serra Talhada,2005-10-01,2005-11-01,2,-2.06,Seca Extrema
+Serra Talhada,2007-05-01,2007-06-01,2,-1.5,Seca Severa
+Serra Talhada,2012-01-01,2012-07-01,7,-2.59,Seca Extrema
+Serra Talhada,2012-10-01,2013-04-01,7,-3.5,Seca Extrema
+Serra Talhada,2015-02-01,2015-04-01,3,-1.4,Seca Moderada
+Serra Talhada,2015-10-01,2015-11-01,2,-2.06,Seca Extrema
+Serra Talhada,2016-08-01,2016-11-01,4,-3.5,Seca Extrema
+Serra Talhada,2021-02-01,2021-03-01,2,-1.73,Seca Severa
+Salgueiro,1971-01-01,1971-02-01,2,-1.4,Seca Moderada
+Salgueiro,1976-07-01,1976-08-01,2,-1.66,Seca Severa
+Salgueiro,1979-08-01,1979-09-01,2,-3.5,Seca Extrema
+Salgueiro,1980-05-01,1980-07-01,3,-2.64,Seca Extrema
+Salgueiro,1981-07-01,1981-11-01,5,-2.42,Seca Extrema
+Salgueiro,1983-06-01,1983-09-01,4,-2.62,Seca Extrema
+Salgueiro,1984-01-01,1984-02-01,2,-1.78,Seca Severa
+Salgueiro,1987-09-01,1987-12-01,4,-3.5,Seca Extrema
+Salgueiro,1990-03-01,1990-05-01,3,-2.0,Seca Extrema
+Salgueiro,1990-11-01,1990-12-01,2,-1.52,Seca Severa
+Salgueiro,1991-11-01,1991-12-01,2,-1.98,Seca Severa
+Salgueiro,1992-09-01,1992-10-01,2,-1.17,Seca Moderada
+Salgueiro,1993-02-01,1993-06-01,5,-2.6,Seca Extrema
+Salgueiro,1994-10-01,1994-11-01,2,-1.35,Seca Moderada
+Salgueiro,1998-04-01,1998-06-01,3,-1.99,Seca Severa
+Salgueiro,2005-10-01,2005-11-01,2,-1.46,Seca Moderada
+Salgueiro,2008-11-01,2008-12-01,2,-1.61,Seca Severa
+Salgueiro,2012-01-01,2012-07-01,7,-2.58,Seca Extrema
+Salgueiro,2012-09-01,2013-03-01,7,-2.59,Seca Extrema
+Salgueiro,2014-01-01,2014-03-01,3,-1.53,Seca Severa
+Salgueiro,2015-02-01,2015-04-01,3,-1.69,Seca Severa
+Salgueiro,2016-04-01,2016-06-01,3,-1.47,Seca Moderada
+Salgueiro,2016-08-01,2016-11-01,4,-3.5,Seca Extrema
+Salgueiro,2017-01-01,2017-02-01,2,-1.55,Seca Severa
+Salgueiro,2021-01-01,2021-03-01,3,-1.74,Seca Severa
+Salgueiro,2023-03-01,2023-04-01,2,-1.4,Seca Moderada
+Petrolina,1970-04-01,1970-07-01,4,-1.62,Seca Severa
+Petrolina,1971-01-01,1971-03-01,3,-1.96,Seca Severa
+Petrolina,1976-05-01,1976-07-01,3,-1.66,Seca Severa
+Petrolina,1980-05-01,1980-08-01,4,-3.5,Seca Extrema
+Petrolina,1982-11-01,1982-12-01,2,-1.84,Seca Severa
+Petrolina,1983-07-01,1983-08-01,2,-3.5,Seca Extrema
+Petrolina,1984-01-01,1984-02-01,2,-2.31,Seca Extrema
+Petrolina,1987-11-01,1988-02-01,4,-1.63,Seca Severa
+Petrolina,1990-03-01,1990-05-01,3,-2.09,Seca Extrema
+Petrolina,1993-03-01,1993-06-01,4,-2.16,Seca Extrema
+Petrolina,1994-11-01,1994-12-01,2,-1.73,Seca Severa
+Petrolina,1995-08-01,1995-09-01,2,-1.19,Seca Moderada
+Petrolina,1998-04-01,1998-10-01,7,-2.76,Seca Extrema
+Petrolina,2002-10-01,2002-11-01,2,-1.54,Seca Severa
+Petrolina,2003-08-01,2003-10-01,3,-3.5,Seca Extrema
+Petrolina,2007-05-01,2007-06-01,2,-1.94,Seca Severa
+Petrolina,2007-09-01,2007-10-01,2,-1.38,Seca Moderada
+Petrolina,2008-09-01,2008-11-01,3,-3.5,Seca Extrema
+Petrolina,2012-01-01,2012-06-01,6,-2.4,Seca Extrema
+Petrolina,2013-02-01,2013-04-01,3,-1.67,Seca Severa
+Petrolina,2015-10-01,2015-12-01,3,-2.64,Seca Extrema
+Petrolina,2016-04-01,2016-06-01,3,-2.29,Seca Extrema
+Petrolina,2016-12-01,2017-03-01,4,-2.48,Seca Extrema
+Petrolina,2021-01-01,2021-03-01,3,-1.76,Seca Severa
