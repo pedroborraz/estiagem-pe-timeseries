@@ -11,7 +11,6 @@ Fluxo:
 6. Salvar resultados em CSV
 """
 
-from __future__ import annotations
 from datetime import date
 from pathlib import Path
 import time
@@ -27,16 +26,16 @@ DATA_DIR = PROJECT_ROOT / "data"
 RAW_DIR = DATA_DIR / "raw"
 PROCESSED_DIR = DATA_DIR / "processed"
 
-MUNICIPIOS: dict[str, dict[str, float | str]] = {
-    "Recife":        {"lat": -8.0539, "lon": -34.8811, "mesoregiao": "Metropolitana"},
-    "Caruaru":       {"lat": -8.2756, "lon": -35.9764, "mesoregiao": "Agreste"},
-    "Garanhuns":     {"lat": -8.8878, "lon": -36.4965, "mesoregiao": "Agreste Meridional"},
+MUNICIPIOS = {
+    "Recife": {"lat": -8.0539, "lon": -34.8811, "mesoregiao": "Metropolitana"},
+    "Caruaru": {"lat": -8.2756, "lon": -35.9764, "mesoregiao": "Agreste"},
+    "Garanhuns": {"lat": -8.8878, "lon": -36.4965, "mesoregiao": "Agreste Meridional"},
     "Serra Talhada": {"lat": -7.9855, "lon": -38.2950, "mesoregiao": "Sertao"},
-    "Salgueiro":     {"lat": -8.0731, "lon": -39.1248, "mesoregiao": "Sertao Central"},
-    "Petrolina":     {"lat": -9.3891, "lon": -40.5027, "mesoregiao": "Sao Francisco"},
+    "Salgueiro": {"lat": -8.0731, "lon": -39.1248, "mesoregiao": "Sertao Central"},
+    "Petrolina": {"lat": -9.3891, "lon": -40.5027, "mesoregiao": "Sao Francisco"},
 }
 
-VARIAVEIS: list[str] = [
+VARIAVEIS = [
     "precipitation_sum",
     "temperature_2m_max",
     "temperature_2m_min",
@@ -44,67 +43,52 @@ VARIAVEIS: list[str] = [
     "et0_fao_evapotranspiration",
 ]
 
-RENOMEAR: dict[str, str] = {
-    "precipitation_sum":          "precipitacao_mm",
-    "temperature_2m_max":         "temp_max_c",
-    "temperature_2m_min":         "temp_min_c",
-    "temperature_2m_mean":        "temp_media_c",
+RENOMEAR = {
+    "precipitation_sum": "precipitacao_mm",
+    "temperature_2m_max": "temp_max_c",
+    "temperature_2m_min": "temp_min_c",
+    "temperature_2m_mean": "temp_media_c",
     "et0_fao_evapotranspiration": "evapo_mm",
 }
 
-COLS_NUMERICAS: list[str] = list(RENOMEAR.values())
+COLS_NUMERICAS = list(RENOMEAR.values())
 
 DATA_INICIO = "1970-01-01"
 DATA_FIM = date.today().isoformat()
 
-LIMIAR_CHUVA_MM = 1.0   # abaixo disso, o dia conta como sem chuva
-LIMIAR_SECA = -1.0      # SPI <= -1.0: seca moderada
+LIMIAR_CHUVA_MM = 1.0  # abaixo disso, o dia conta como sem chuva
+LIMIAR_SECA = -1.0  # SPI <= -1.0: seca moderada
 SPI_SEVERA = -1.5
 SPI_EXTREMA = -2.0
 
 
-def criar_diretorios() -> None:
+def criar_diretorios():
     """Garante que as pastas de dados existam antes de qualquer operacao"""
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def criar_sessao_http() -> requests.Session:
+def criar_sessao_http():
     """Cria uma sessao HTTP com retry automatico e backoff exponencial para erros 429 e 5xx"""
-    retry = Retry(
-        total=6,
-        backoff_factor=2.0,
-        status_forcelist=[429, 500, 502, 503, 504],
-        allowed_methods=frozenset(["GET"]),
-        respect_retry_after_header=True,
-        raise_on_status=False,
-    )
+    retry = Retry(total=6, backoff_factor=2.0, status_forcelist=[429, 500, 502, 503, 504],
+                  allowed_methods=frozenset(["GET"]), respect_retry_after_header=True,
+                  raise_on_status=False)
     adapter = HTTPAdapter(max_retries=retry, pool_connections=4, pool_maxsize=4)
 
     session = requests.Session()
     session.mount("https://", adapter)
-    session.mount("http://", adapter)
     session.headers["User-Agent"] = "Mozilla/5.0"
     return session
 
 
-def dados_ja_existem() -> bool:
+def dados_ja_existem():
     """Verifica se os CSVs brutos ja foram coletados"""
     arquivos = list(RAW_DIR.glob("*_diario.csv"))
     return len(arquivos) >= len(MUNICIPIOS)
 
 
-def coletar_municipio(
-    nome: str,
-    lat: float,
-    lon: float,
-    session: requests.Session,
-    variaveis: list[str] = VARIAVEIS,
-    data_inicio: str = DATA_INICIO,
-    data_fim: str = DATA_FIM,
-    max_tentativas: int = 4,
-    pausa_429: int = 6,
-) -> pd.DataFrame:
+def coletar_municipio(nome, lat, lon, session, variaveis=VARIAVEIS, data_inicio=DATA_INICIO,
+                      data_fim=DATA_FIM, max_tentativas=4, pausa_429=6):
     """
     Busca dados diarios da Open-Meteo para um municipio
 
@@ -112,12 +96,12 @@ def coletar_municipio(
     """
     url = "https://archive-api.open-meteo.com/v1/archive"
     params = {
-        "latitude":   lat,
-        "longitude":  lon,
+        "latitude": lat,
+        "longitude": lon,
         "start_date": data_inicio,
-        "end_date":   data_fim,
-        "daily":      ",".join(variaveis),
-        "timezone":   "America/Recife",
+        "end_date": data_fim,
+        "daily": ",".join(variaveis),
+        "timezone": "America/Recife",
     }
 
     for tentativa in range(max_tentativas):
@@ -153,7 +137,6 @@ def coletar_municipio(
             print(f"  {nome}: timeout na tentativa {tentativa + 1}/{max_tentativas}")
 
         except requests.exceptions.RequestException as exc:
-            # erro permanente (SSL, DNS): nao adianta repetir
             print(f"  {nome}: erro na requisicao - {exc}")
             break
 
@@ -161,32 +144,20 @@ def coletar_municipio(
     return pd.DataFrame()
 
 
-def coletar_todos_municipios(
-    municipios: dict[str, dict[str, float | str]] = MUNICIPIOS,
-    variaveis: list[str] = VARIAVEIS,
-    data_inicio: str = DATA_INICIO,
-    data_fim: str = DATA_FIM,
-    pausa_entre_municipios: int = 6,
-) -> dict[str, pd.DataFrame]:
+def coletar_todos_municipios(municipios=MUNICIPIOS, variaveis=VARIAVEIS, data_inicio=DATA_INICIO,
+                             data_fim=DATA_FIM, pausa_entre_municipios=6):
     """
     Coleta dados de todos os municipios, salva CSVs brutos e retorna
     um dicionario {nome: DataFrame} com os municipios bem-sucedidos
     """
     session = criar_sessao_http()
-    dados: dict[str, pd.DataFrame] = {}
+    dados = {}
 
     print(f"Coletando dados: {data_inicio} -> {data_fim}\n")
 
     for nome, info in municipios.items():
-        df = coletar_municipio(
-            nome=nome,
-            lat=float(info["lat"]),
-            lon=float(info["lon"]),
-            session=session,
-            variaveis=variaveis,
-            data_inicio=data_inicio,
-            data_fim=data_fim,
-        )
+        df = coletar_municipio(nome, float(info["lat"]), float(info["lon"]), session,
+                               variaveis=variaveis, data_inicio=data_inicio, data_fim=data_fim)
         if not df.empty:
             dados[nome] = df
             arquivo = RAW_DIR / f"{nome.replace(' ', '_').lower()}_diario.csv"
@@ -198,20 +169,16 @@ def coletar_todos_municipios(
     return dados
 
 
-def interpolar_lacunas(
-    dados: dict[str, pd.DataFrame],
-    colunas: list[str] = COLS_NUMERICAS,
-    limite: int = 7,
-) -> pd.DataFrame:
+def interpolar_lacunas(dados, colunas=COLS_NUMERICAS, limite=7):
     """
     Preenche lacunas curtas nas series diarias por interpolacao temporal
     e retorna um DataFrame unico com todos os municipios
 
-    A Open-Meteo Archive (reanalise ERA5) e uma serie completa, sem datas
+    A Open-Meteo Archive e uma serie completa, sem datas
     faltantes. A interpolacao e defensiva, caso uma coleta futura retorne
-    lacunas; `limite` e o numero maximo de dias consecutivos a preencher
+    lacunas; limite e o numero maximo de dias consecutivos a preencher
     """
-    frames: list[pd.DataFrame] = []
+    frames = []
 
     for df in dados.values():
         df_c = df.copy()
@@ -223,25 +190,24 @@ def interpolar_lacunas(
     return pd.concat(frames).sort_index() if frames else pd.DataFrame()
 
 
-def agregar_mensal(df: pd.DataFrame) -> pd.DataFrame:
+def agregar_mensal(df):
     """Agrega o DataFrame diario para escala mensal por municipio (MultiIndex data, municipio)"""
     mensal = (
         df.copy()
         .assign(periodo=lambda d: d.index.to_period("M"))
         .groupby(["periodo", "municipio"])
         .agg(
-            precip_mm      =("precipitacao_mm", "sum"),
-            temp_max_c     =("temp_max_c",      "mean"),
-            temp_min_c     =("temp_min_c",      "mean"),
-            temp_media_c   =("temp_media_c",    "mean"),
-            evapo_mm       =("evapo_mm",        "sum"),
-            dias_sem_chuva =("precipitacao_mm", lambda x: (x < LIMIAR_CHUVA_MM).sum()),
-            n_dias         =("precipitacao_mm", "count"),
+            precip_mm=("precipitacao_mm", "sum"),
+            temp_max_c=("temp_max_c", "mean"),
+            temp_min_c=("temp_min_c", "mean"),
+            temp_media_c=("temp_media_c", "mean"),
+            evapo_mm=("evapo_mm", "sum"),
+            dias_sem_chuva=("precipitacao_mm", lambda x: (x < LIMIAR_CHUVA_MM).sum()),
+            n_dias=("precipitacao_mm", "count"),
         )
         .round(2)
     )
 
-    # Period -> Timestamp para exportar em CSV
     mensal.index = mensal.index.set_levels(
         mensal.index.levels[0].to_timestamp(), level=0
     )
@@ -249,53 +215,42 @@ def agregar_mensal(df: pd.DataFrame) -> pd.DataFrame:
     return mensal
 
 
-def calcular_spi(serie_mensal: pd.Series, escala: int = 3) -> pd.Series:
+def calcular_spi(serie_mensal, escala=3):
     """
     Calcula o SPI de uma serie de precipitacao mensal usando o pacote spei
-
     O pacote acumula a precipitacao em janela de escala meses, ajusta a
     distribuicao Gama separadamente para cada mes do ano (apenas observacoes
     daquele mes), corrige a probabilidade de precipitacao zero e transforma o
     resultado para a normal padrao. Valores negativos indicam deficit (seca)
     Os primeiros `escala - 1` meses retornam NaN por falta de janela completa
-
-    Referencia: Lloyd-Hughes & Saunders (2002), Int. J. Climatology, 22,
-    1571-1592. DOI: 10.1002/joc.846
     """
-    spi = spei_spi(
-        serie_mensal,
-        dist=dist_gamma,
-        timescale=escala,
-        fit_freq="MS",
-        fit_window=0,
-        prob_zero=True,
-    )
+    spi = spei_spi(serie_mensal, dist=dist_gamma, timescale=escala, fit_freq="MS",
+                   fit_window=0, prob_zero=True)
     spi.name = f"SPI-{escala}"
 
-    # Em meses muito secos de regioes aridas (precip ~0) o ajuste da Gama
-    # degenera e a PPF retorna valores absurdos. Como o SPI e normal padronizado,
+    # Em meses muito secos de regioes aridas (precip ~0) o ajuste da Gama retorna valores absurdos.
     # |SPI|>3.5 nao tem sentido fisico, limita sem descartar o pico da seca
     return spi.clip(-3.5, 3.5)
 
 
-def calcular_spi_todos_municipios(df_mensal: pd.DataFrame) -> dict[str, pd.DataFrame]:
+def calcular_spi_todos_municipios(df_mensal):
     """Calcula SPI-3 e SPI-12 por municipio"""
-    resultados: dict[str, pd.DataFrame] = {}
+    resultados = {}
 
     for municipio in df_mensal.index.get_level_values("municipio").unique():
         precip = df_mensal.xs(municipio, level="municipio")["precip_mm"].sort_index()
         resultados[municipio] = pd.DataFrame(
             {
                 "precip_mm": precip,
-                "spi3":      calcular_spi(precip, escala=3),
-                "spi12":     calcular_spi(precip, escala=12),
+                "spi3": calcular_spi(precip, escala=3),
+                "spi12": calcular_spi(precip, escala=12),
             }
         )
 
     return resultados
 
 
-def _classificar_seca(spi_min: float, em_andamento: bool) -> str:
+def _classificar_seca(spi_min, em_andamento):
     """Retorna o rotulo de classificacao de um evento de seca"""
     sufixo = " (em andamento)" if em_andamento else ""
 
@@ -306,14 +261,7 @@ def _classificar_seca(spi_min: float, em_andamento: bool) -> str:
     return f"Seca Moderada{sufixo}"
 
 
-def _registrar_evento(
-    eventos: list[dict],
-    spi: pd.Series,
-    municipio: str,
-    inicio: pd.Timestamp,
-    fim: pd.Timestamp,
-    em_andamento: bool = False,
-) -> None:
+def _registrar_evento(eventos, spi, municipio, inicio, fim, em_andamento=False):
     """Acrescenta um evento de seca a lista de resultados"""
     trecho = spi[inicio:fim]
     if len(trecho) < 2:
@@ -323,26 +271,21 @@ def _registrar_evento(
 
     eventos.append(
         {
-            "municipio":     municipio,
-            "inicio":        inicio,
-            "fim":           fim,
+            "municipio": municipio,
+            "inicio": inicio,
+            "fim": fim,
             "duracao_meses": len(trecho),
-            "spi_minimo":    spi_min,
+            "spi_minimo": spi_min,
             "classificacao": _classificar_seca(spi_min, em_andamento),
         }
     )
 
 
-def identificar_secas(
-    df_spi: pd.DataFrame,
-    municipio: str,
-    limiar: float = LIMIAR_SECA,
-    col: str = "spi3",
-) -> pd.DataFrame:
+def identificar_secas(df_spi, municipio, limiar=LIMIAR_SECA, col="spi3"):
     """Identifica blocos contiguos de SPI abaixo do limiar como eventos de seca"""
     spi = df_spi[col].dropna()
-    eventos: list[dict] = []
-    inicio: pd.Timestamp | None = None
+    eventos = []
+    inicio = None
 
     for data, em_seca in (spi <= limiar).items():
         if em_seca and inicio is None:
@@ -358,12 +301,8 @@ def identificar_secas(
     return pd.DataFrame(eventos)
 
 
-def identificar_secas_todos_municipios(
-    resultados_spi: dict[str, pd.DataFrame],
-    municipios: dict[str, dict[str, float | str]] = MUNICIPIOS,
-    limiar: float = LIMIAR_SECA,
-    col: str = "spi3",
-) -> pd.DataFrame:
+def identificar_secas_todos_municipios(resultados_spi, municipios=MUNICIPIOS,
+                                       limiar=LIMIAR_SECA, col="spi3"):
     """Concatena os eventos de seca de todos os municipios em um unico DataFrame"""
     frames = [
         identificar_secas(resultados_spi[nome], nome, limiar=limiar, col=col)
@@ -381,13 +320,7 @@ def identificar_secas_todos_municipios(
     return df_eventos
 
 
-def salvar_resultados(
-    resultados_spi: dict[str, pd.DataFrame],
-    df_diario: pd.DataFrame,
-    df_mensal: pd.DataFrame,
-    df_eventos: pd.DataFrame,
-    output_dir: Path = PROCESSED_DIR,
-) -> None:
+def salvar_resultados(resultados_spi, df_diario, df_mensal, df_eventos, output_dir=PROCESSED_DIR):
     """Salva todos os arquivos processados"""
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -400,15 +333,15 @@ def salvar_resultados(
         df_spi.to_csv(output_dir / f"spi_{nome_arquivo}.csv")
 
 
-def mostrar_resumo(df_diario: pd.DataFrame, df_eventos: pd.DataFrame) -> None:
+def mostrar_resumo(df_diario, df_eventos):
     """Exibe um resumo do processamento para conferencia rapida"""
     resumo = (
         df_diario.groupby("municipio")
         .agg(
-            dias_registrados           =("precipitacao_mm", "count"),
-            precipitacao_total_mm      =("precipitacao_mm", "sum"),
-            temperatura_media_c        =("temp_media_c",    "mean"),
-            evapotranspiracao_media_mm =("evapo_mm",        "mean"),
+            dias_registrados=("precipitacao_mm", "count"),
+            precipitacao_total_mm=("precipitacao_mm", "sum"),
+            temperatura_media_c=("temp_media_c", "mean"),
+            evapotranspiracao_media_mm=("evapo_mm", "mean"),
         )
         .round(2)
         .reset_index()
@@ -423,7 +356,7 @@ def mostrar_resumo(df_diario: pd.DataFrame, df_eventos: pd.DataFrame) -> None:
         print(df_eventos.head(10).to_string(index=False))
 
 
-def main() -> None:
+def main():
     criar_diretorios()
 
     if dados_ja_existem():
@@ -440,7 +373,7 @@ def main() -> None:
     if not dados_brutos:
         print("Nenhum municipio coletado com sucesso!")
         return
-    
+
     print("\nLIMPEZA E AGREGACAO")
     df_diario = interpolar_lacunas(dados_brutos)
     df_mensal = agregar_mensal(df_diario)
