@@ -37,7 +37,6 @@ Antes das funções, o código define algumas "constantes":
 | Função | O que faz |
 |--------|-----------|
 | `criar_diretorios()` | Cria as pastas data/raw e data/processed se não existirem |
-| `criar_sessao_http()` | Prepara a conexão com a internet. Se a API falhar, ela tenta de novo automaticamente |
 | `dados_ja_existem()` | Verifica se já baixamos os dados antes, para não baixar de novo |
 
 ### Coleta dos dados
@@ -51,8 +50,8 @@ Antes das funções, o código define algumas "constantes":
 
 | Função | O que faz |
 |--------|-----------|
-| `interpolar_lacunas(...)` | Preenche pequenos buracos nos dados (dias sem informação), estimando os valores que faltam |
-| `agregar_mensal(df)` | Junta os dados diários em mensais (soma a chuva do mês, tira a média da temperatura, etc.). O SPI trabalha com dados mensais |
+| `interpolar_lacunas(...)` | Preenche pequenos buracos nos dados (dias sem informação), estimando os valores que faltam, e junta todas as cidades em uma tabela só |
+| `agregar_mensal(...)` | Junta os dados diários em mensais (soma a chuva do mês, tira a média da temperatura, etc.). O SPI trabalha com dados mensais |
 
 ### Cálculo do SPI (índice de seca)
 
@@ -65,8 +64,7 @@ Antes das funções, o código define algumas "constantes":
 
 | Função | O que faz |
 |--------|-----------|
-| `_classificar_seca(...)` | Diz se a seca foi moderada, severa ou extrema, conforme o SPI mínimo |
-| `_registrar_evento(...)` | Guarda um período de seca encontrado (início, fim, duração, intensidade) |
+| `adicionar_evento(...)` | Guarda um período de seca encontrado (início, fim, duração) e diz se foi moderada, severa ou extrema, conforme o SPI mínimo |
 | `identificar_secas(...)` | Olha o SPI de uma cidade ao longo do tempo e marca os períodos contínuos de seca |
 | `identificar_secas_todos_municipios(...)` | Faz isso para todas as cidades e junta tudo numa tabela só |
 
